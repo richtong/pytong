@@ -1,5 +1,10 @@
 ## Rich Tong's Fine Python Utilities
 
+# https://packaging.python.org/tutorials/packaging-projects/
+ENV ?= pipenv
+PIP ?= logging
+PIP_DEV ?= build twine
+
 
 ## lib-sync: when in https://github.com/richtong/src submodule sync from sort lib
 .PHONY: lib-sync
