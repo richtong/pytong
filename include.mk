@@ -1,13 +1,13 @@
 #
 ##
-## Base commands: cloned from https://github.com/richtong/lib/include.mk
+## Base commands
 ## -------------
 #
 TAG ?= v1
 # https://www.gnu.org/software/make/manual/make.html#Flavors
 # Use simple expansion for most and not ?= since default is /bin/bash
 # which is bash v3 for MacOS
-SHELL := /usr/bin/env bash
+SHELL ?= /usr/bin/env bash
 GIT_ORG ?= richtong
 SUBMODULE_HOME ?= "$(HOME)/ws/git/src"
 NEW_REPO ?=
@@ -44,18 +44,23 @@ readme:
 .PHONY: pre-commit
 pre-commit:
 	@echo this does not work on WSL so you need to run pre-commit install manually
-	[[ -e .pre-commit-config.yaml ]] && $(RUN) pre-commit autoupdate || true
-	[[ -e .pre-commit-config.yaml ]] && $(RUN) pre-commit run --all-files || true
-
+	if [[ ! -e .pre-commit-config.yaml ]]; then \
+		echo "no .pre-commit-config.yaml found copy from ./lib"; \
+	else \
+		$(RUN) pre-commit autoupdate || true && \
+		$(RUN) pre-commit run --all-files || true \
+	; fi
 
 ## pre-commit-install: Install precommit (get prebuilt .pre-commit-config.yaml from @richtong/lib)
 .PHONY: pre-commit-install
 pre-commit-install:
-	if [[ -e .pre-commit-config.yaml ]]; then \
+	if [[ ! -e .pre-commit-config.yaml ]]; then \
+		echo "copy appropriate .pre-commit-config.yaml from ./lib" \
+	; else \
 		$(RUN) pre-commit install || true && \
-		mkdir -p .github/workflows \
+		mkdir -p .github/workflows && \
+		echo "copy the appropriate ./lib/workflows in .github/workflows" \
 	; fi
-	@echo "copy the appropriate workflows from lib"
 
 ## git-lfs: installs git lfs
 .PHONY: git-lfs
@@ -85,3 +90,17 @@ else
 	git branch -M main
 	git push -u origin main
 endif
+
+## direnv: creates a new environemnt with direnv and asdf
+.PHONY: direnv
+direnv:
+	touch .envrc
+	direnv allow .envrc
+
+## brew-install: install brew packages
+# quote needed in case BREW is not set
+.PHONY: brew-install
+brew-install:
+	if [[ -n "$(BREW)" ]]; then \
+		brew install $(BREW) \
+	; fi

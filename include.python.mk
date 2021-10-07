@@ -27,7 +27,7 @@ DOC ?= doc
 LIB ?= lib
 name ?= $$(basename $(PWD))
 # put a python file here or the module name
-MAIN ?= $(name)
+MAIN ?= $(name).py
 #MAIN ?= ScrapeAllAndSend.py
 MAIN_PATH ?= $(PWD)
 
@@ -109,7 +109,7 @@ main:
 ## pdb: run locally with python to test components from main
 .PHONY: pdb
 pdb:
-	$(ACTIVATE) && python -m pdb $(MODULE) $(FLAGS)
+	$(RUN) python -m pdb $(MODULE) $(FLAGS)
 
 ## debug: run with debug model on for main
 .PHONY: debug
@@ -154,8 +154,9 @@ vi:
 	cd $(ED_DIR) && $(RUN) "$$VISUAL" $(ED)
 
 # https://www.technologyscout.net/2017/11/how-to-install-dependencies-from-a-requirements-txt-file-with-conda/
-.PHONY: install
-install: $(INSTALL_REQ)
+## pip-install: install into python environment set by $(ENV)
+.PHONY: pip-install
+pip-install: $(INSTALL_REQ)
 	@echo PIP=$(PIP)
 	@echo PIP_ONLY=$(PIP_ONLY)
 	@echo PIP_DEV=$(PIP_DEV)
@@ -340,3 +341,8 @@ pipenv-clean:
 	pipenv --rm || true
 	rm Pipfile* || true
 	touch Pipfile
+
+## Install local python vrsion with asdf
+.PHONY: python-asdf
+python-asdf:
+	asdf local python latest
