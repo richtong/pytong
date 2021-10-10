@@ -38,3 +38,12 @@ class <Your Class>(BaseLog)
 
 The logging module automatically creates loggers and lists logs by the call
 stack. It also sends different prefixes for class calls.
+
+## Building
+
+You can install the needed pieces with 
+
+```sh
+make pre-install
+make install
+```

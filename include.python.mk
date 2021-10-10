@@ -25,11 +25,13 @@ all_yaml := $$(find restart -name "*.yaml" $(exclude))
 PYTHON ?= 3.9
 DOC ?= doc
 LIB ?= lib
-name ?= $$(basename $(PWD))
+NAME ?= $$(basename $(PWD))
 # put a python file here or the module name
 MAIN ?= $(name).py
 #MAIN ?= ScrapeAllAndSend.py
 MAIN_PATH ?= $(PWD)
+
+TEST_PYPI_USERNAME ?= richtong
 
 # this is not yet a module so no name
 IS_MODULE ?= False
@@ -255,11 +257,6 @@ package:
 pypi: package
 	$(RUN) twine upload dist/*
 
-## pypi-test: build package and push to test python package index
-.PHONY: pypi-test
-pypi-test: package
-	$(RUN) twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-
 ## pipenv: Run interactive commands in Pipenv environment
 .PHONY: pipenv
 pipenv:
@@ -346,3 +343,23 @@ pipenv-clean:
 .PHONY: python-asdf
 python-asdf:
 	asdf local python latest
+
+## pypi-test: build and upload PyPi PIP package distribution to test
+# https://twine.readthedocs.io/en/latest/
+.PHONY: pypi-test
+pypi-test: dist
+	$(RUN) python -m twine upload -u __token__ \
+		-p "pypi-$$TEST_PYPI_API_TOKEN" \
+		--repository testpypi dist/*
+	$(RUN) python -m pip install --index-url https://test.pypi.org/simple --no-deps $(NAME)-$(TEST_PYPI_USERNAME)
+
+## dist: build PyPi PIP packages
+dist:
+	@echo "Put token into TEST_PYPI_API_TOKEN"
+	@echo "from https://test.pypi.org/manage/account/#api-token"
+	$(RUN) python -m build
+
+## pypi-test: build package and push to test python package index (obooslete)
+#.PHONY: pypi-test
+#pypi-test: package
+#    $(RUN) twine upload --repository-url https://test.pypi.org/legacy/ dist/*
