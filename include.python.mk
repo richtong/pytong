@@ -354,7 +354,7 @@ test-pypi: dist
 	$(RUN) python -m pip install --index-url https://test.pypi.org/simple --no-deps $(NAME)
 
 ## dist: build PyPi PIP packages
-dist: setup.py
+dist: setup.cfg
 	@echo "Put token into TEST_PYPI_API_TOKEN"
 	@echo "from https://test.pypi.org/manage/account/#api-token"
 	$(RUN) python -m build
