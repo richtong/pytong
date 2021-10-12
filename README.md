@@ -56,3 +56,15 @@ make pypi
 ## Testing
 
 The test scaffolding is not working yet.
+
+## File Layout
+
+We adopt the scheme that seems a little redundent where we have a strudture
+that is ./pytong/src/pytong and the tests are in ./pytong/tests.
+[Ionel](https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure) 
+explains why this is important. And also
+[HYnek](https://hynek.me/articles/testing-packaging/) explains why as well.
+
+The biggest reason for this is that you are forced to install code and can
+check for packaging breaks. And you don't want to include test modules with
+your source code.
