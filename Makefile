@@ -2,7 +2,8 @@
 
 # https://packaging.python.org/tutorials/packaging-projects/
 ENV ?= pipenv
-PIP ?= logging
+# note that logging is included by default 
+PIP ?= 
 PIP_DEV ?= build twine setuptools wheel tqdm
 
 

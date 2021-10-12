@@ -3,9 +3,14 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[packages]
+
 [dev-packages]
 build = "*"
 twine = "*"
+setuptools = "*"
+wheel = "*"
+tqdm = "*"
 pre-commit = "*"
 isort = "*"
 seed-isort-config = "*"
