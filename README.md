@@ -41,9 +41,18 @@ stack. It also sends different prefixes for class calls.
 
 ## Building
 
-You can install the needed pieces with 
+You can install the needed pieces with and then upload to test.pypi.org or
+pypi.org
 
 ```sh
-make pre-install
-make install
+make pip-install
+# edit .envrc with the your API Token for test do not include the pypi- that is
+# added in the makefile
+make test-pypi
+# add the pypi api token without the pypi-
+make pypi
 ```
+
+## Testing
+
+The test scaffolding is not working yet.

@@ -344,7 +344,7 @@ test-pypi: dist
 	$(RUN) twine upload -u __token__ \
 		-p "pypi-$$TEST_PYPI_API_TOKEN" \
 		--repository testpypi dist/*
-	$(RUN) python -m pip install --index-url https://test.pypi.org/simple --no-deps $(NAME)
+	$(RUN) python -m pip install --upgrade --index-url https://test.pypi.org/simple --no-deps $(NAME)
 
 ## dist: build PyPi PIP packages
 dist: setup.py
