@@ -263,10 +263,16 @@ format:
 	$(RUN) isort --profile=black -w 79 .
 	$(RUN) black -l 79 *.py
 
-## pipenv: Run interactive commands in Pipenv environment
-.PHONY: pipenv
-pipenv:
+## shell: Run interactive commands in Pipenv environment
+.PHONY: shell
+shell:
+ifeq ($(strip $(ENV)),pipenv)
 	pipenv shell
+else ifeq ($(strip $(ENV)),conda)
+	@echo "run conda activate $(name) in your shell make cannot run"
+else
+	@echo "bare pip so no need to shell"
+fi
 
 ## pipenv-lock: Install from the lock file (for deployment and test)
 .PHONY: pipenv-lock
@@ -282,11 +288,6 @@ conda-clean:
 	$(UPDATE)
 	conda env remove -n $(name) || true
 	conda clean -afy
-
-## conda: activate conda environment must be done in bash shell
-.PHONY: conda
-conda:
-	@echo "run conda activate $(name) in you shell"
 
 # Note we are using setup.cfg for all the mypy and flake EXCLUDEs and config
 ## lint : code check (conda)
@@ -330,7 +331,7 @@ pipenv-python: pipenv-clean
 	@echo pipenv sometimes corrupts after python $(PYTHON) install so reinstall if needed
 	pipenv --version || brew reinstall pipenv
 
-	PIPENV_IGNORE_VIRTUALENVS=1 pipenv install --python /usr/local/opt/python@$(PYTHON)/bin/python3
+	PIPENV_IGNORE_VIRTUALENVS=1 pipenv install --python $(PYTHON)
 	pipenv clean
 	@echo use .env to ensure we can see all packages
 	grep ^PYTHONPATH .env ||  echo "PYTHONPATH=." >> .env
