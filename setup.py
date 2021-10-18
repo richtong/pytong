@@ -17,9 +17,7 @@ setuptools.setup(
     # indication of inline type annotations with an empty file named py.typed
     # https://blog.ian.stapletoncordas.co/2019/02/distributing-python-libraries-with-type-annotations.html
     # https://www.python.org/dev/peps/pep-0561/
-    package_data={
-        'pytong': ['py.typed']
-    },
+    package_data={"pytong": ["py.typed"]},
     project_urls={
         "Bug Tracker": "https://github.com/richtong/pytong/issues",
     },

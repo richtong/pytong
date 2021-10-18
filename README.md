@@ -61,7 +61,7 @@ The test scaffolding is not working yet.
 
 We adopt the scheme that seems a little redundent where we have a strudture
 that is ./pytong/src/pytong and the tests are in ./pytong/tests.
-[Ionel](https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure) 
+[Ionel](https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure)
 explains why this is important. And also
 [HYnek](https://hynek.me/articles/testing-packaging/) explains why as well.
 
