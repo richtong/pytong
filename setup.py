@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pytong",
-    version="0.0.11",
+    version="0.1.1",
     author="Richard Tong",
     author_email="rich@tongfamily.com",
     description="Rich Tong's Fine Utilities",
@@ -23,6 +23,8 @@ setuptools.setup(
     },
     classifiers=[
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
