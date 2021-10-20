@@ -4,6 +4,95 @@ For convenience, some useful utilities because importing Python modules is
 pretty unfun and it is easy to just publish them to PyPi and use them
 everywhere.
 
+## Version 2 Logging
+
+The previous version 2 logging required a lot of complex keeping of log
+names with a Log_root. Turns out after much reading this is much simpler
+than I thought. The trick is that all that is happening is that
+logging has virtual tree based on the name of the logger, so a logger named
+`netqr.params` means that in the directory `./netqr/params.py` is where the
+module (that is the file) is located. This is kept in a dunder `__name__`
+
+So instead of having to do base names and so forth, you can just calculate log
+names based on the __name__ and then add some more information.
+
+The way that this works is that you first create a `logging.yaml` that has the
+logging parameters. Then at the top of each file (aka module) you manipulate a
+global variable with this to get the current active loggers:
+
+```python
+import logging
+log = logging.getLogger(__name__)
+```
+
+This is the main thing needed because
+
+In most cases though, you will actually be better off just adding different
+[format
+strings](https://docs.python.org/3/library/logging.html#formatter-objects)
+since they have so much more data in them, for example, the name of the
+function and then the type s for string, d for digit, etc.
+
+Note that you can also says `10s` which means the first 10 characters of the
+string only and it becomes a fixed width field:
+
+| String | Meaning
+--- | ---
+%{asctime}s | LogRecord creation time
+%{filename}s | Current file
+%{funcName}s | Current function
+%{levelname}s | Logging level (eg DEBUG, INFO)
+%{levelno}s | Logging number {eg 1-100}
+%{lineno}d | Current line number
+%{message}s | Message of log
+%{module}s | File without the .py
+%{name}s | Name of the logger
+%{pathname}s | Full path of file
+%{process}d | Process id
+%{processName}s | Name of process
+%{thread}d | Thread id
+%{threadName}s | Thread name
+
+So most of the time you will be fine with this level of detail, the main thing
+missing is that for class objects, you are missing some detail, but you know
+the file location and the line number.
+
+The second trick is that if you want more logging detail then in a function you
+can create a logger by create more dotted names, :
+
+```python
+import logging
+
+# this logger will be used for all functions in this module
+log = logging.getLogger(__name__)
+
+class new_class():
+  def __init__(self):
+    # use the class logger for all methods that appends the class type to the
+    # current file/module
+    self.log = logging.getLogger(__name__ + '.' + type(self).__name__)
+
+  def add():
+    # log with the instance name and class type
+    self.log("Entering a new method to add to the database")
+
+```
+
+### Version 2 Logging helper function
+
+This is much simpler than version 1 and the only helper needed is to load the
+YAML file with the configuration:
+
+```python
+from pytong import log_config
+
+def main():
+  log = log_config()
+  log.debug(f"{log=} created")
+```
+
+## Version 1 Logging (deprecated)
+
 Usage is pretty simple
 
 ```python
