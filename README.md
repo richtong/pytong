@@ -6,7 +6,7 @@ everywhere.
 
 ## Version 2 Logging
 
-The previous version 2 logging required a lot of complex keeping of log
+The previous version 1 logging required complex keeping of log
 names with a Log_root. Turns out after much reading this is much simpler
 than I thought. The trick is that all that is happening is that
 logging has virtual tree based on the name of the logger, so a logger named
@@ -84,16 +84,29 @@ This is much simpler than version 1 and the only helper needed is to load the
 YAML file with the configuration:
 
 ```python
-from pytong import log_config
+import logging
+from pytong import config_log
+
+# this is the module wide logging by setting a global variable
+log = logging.getLogger(__name__)
+
+# setLog creates a logger named <module path>/<class name>
+@setLog
+class test:
+  def __init__(self):
+    # the logger name is '__main__.test'
+    self.log(f"In {self=}")
 
 def main():
-  log = log_config()
+  config_log()
+  # the logger name is '__main__' and funcname will be printed
   log.debug(f"{log=} created")
 ```
 
 ## Version 1 Logging (deprecated)
 
-Usage is pretty simple
+Usage is pretty simple, we use inheritance to have the right logging compared
+with v2 which uses a class decorator.
 
 ```python
 from pytong import Log, BaseLog  #type: ignore
