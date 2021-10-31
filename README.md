@@ -22,7 +22,21 @@ global variable with this to get the current active loggers:
 
 ```python
 import logging
-log = logging.getLogger(__name__)
+# NOrmally this is wht you would put
+# log = logging.getLogger(__name__)
+# this sets the logger and configures based on logging.yaml for you
+log: logging.Logger = LogConfig(__name__).logger
+
+# in functions you can use log
+def main():
+  global log
+  log.debug(f"I am here {__name__=}")
+
+# in classes you can decorate and it creates a self.log for you
+@LogClass
+class test:
+  def __init__(self):
+    self.log.debug(f"In a class called {type(self)=}")
 ```
 
 This is the main thing needed because

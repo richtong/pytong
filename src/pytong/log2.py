@@ -9,6 +9,7 @@ import logging
 import logging.config
 from pathlib import Path
 import yaml  # type: ignore
+from typing import Dict
 
 # https://www.geeksforgeeks.org/python-functools-wraps-function/
 # we only wrap classes though
@@ -17,17 +18,30 @@ import yaml  # type: ignore
 log: logging.Logger = logging.getLogger(__name__)
 
 
-def config_log(config: Path = Path("logging.yaml")) -> None:
-    """Read Logging Config YAML file."""
-    global log
-    log.warning(f"{Path.cwd()=}")
-    with open(config, "r") as stream:
-        try:
-            logging_config = yaml.safe_load(stream)
-        except yaml.YAMLError:
-            # no config so take defaults
-            pass
-    logging.config.dictConfig(logging_config)
+class LogConfig:
+    """Set logger configuration."""
+
+    config: Path
+    name: str
+    config_yaml: Dict
+    logger: logging.Logger
+
+    def __init__(
+        self, name: str = __name__, config: Path = Path("logging.yaml")
+    ) -> None:
+        """Read Logging Config YAML file."""
+        self.config = config
+        self.name = name
+        global log
+        log.warning(f"{Path.cwd()=}")
+        with open(self.config, "r") as stream:
+            try:
+                self.logging_yaml = yaml.safe_load(stream)
+            except yaml.YAMLError:
+                # no config so take defaults
+                pass
+        logging.config.dictConfig(self.logging_yaml)
+        self.logger = logging.getLogger(self.name)
 
 
 # https://pencilprogrammer.com/decorate-python-class/
@@ -40,7 +54,7 @@ def config_log(config: Path = Path("logging.yaml")) -> None:
 
 
 # https://towardsdatascience.com/using-class-decorators-in-python-2807ef52d273
-class SetLog:
+class LogClass:
     """
     Wrap a class with logging info.
 

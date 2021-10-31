@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pytong",
-    version="0.2.1",
+    version="0.2.2",
     author="Richard Tong",
     author_email="rich@tongfamily.com",
     description="Rich Tong's Fine Utilities",
