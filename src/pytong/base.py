@@ -2,6 +2,7 @@
 
 Base mainly includes the description fields
 """
+
 import logging
 from typing import Optional
 
