@@ -1,4 +1,5 @@
 """Setup for Pytong."""
+
 import setuptools  # type: ignore
 
 with open("README.md", "r", encoding="utf-8") as fh:
