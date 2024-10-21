@@ -15,7 +15,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v5.0.0
     hooks:
       - id: check-added-large-files
       - id: check-ast
@@ -49,7 +49,7 @@ repos:
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
     # temp fix for pre-commit breakage in shellcheck
     # https://github.com/jumanjihouse/pre-commit-hooks/issues/82
-    rev: 2.1.5
+    rev: 3.0.0
     hooks:
       # as of Feb 2020, error with ruby 3.0
       # https://github.com/jumanjihouse/pre-commit-hooks/issues/86
@@ -73,22 +73,22 @@ repos:
   # https://github.com/igorshubovych/markdownlint-cli
   # node version of markdownlint with better disabling of checks
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.29.0
+    rev: v0.42.0
     hooks:
     - id: markdownlint
 
   # https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/
   # https://github.com/pre-commit/mirrors-mypy
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v0.910-1'
+    rev: 'v1.12.1'
     hooks:
       - id: mypy
   - repo: https://github.com/pycqa/flake8
-    rev: 4.0.1
+    rev: 7.1.1
     hooks:
       - id: flake8
   - repo: https://github.com/pycqa/pydocstyle
-    rev: 6.1.1
+    rev: 6.3.0
     hooks:
       - id: pydocstyle
 
@@ -109,13 +109,13 @@ repos:
   # https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/
 
   - repo: https://github.com/psf/black
-    rev: 21.9b0
+    rev: 24.10.0
     hooks:
       - id: black
         language_version: python3.9
         args: [-l 79]
   # check shell scripts you check in
-  - repo: git://github.com/detailyang/pre-commit-shell
+  - repo: https://github.com/detailyang/pre-commit-shell
     rev: 1.0.5
     hooks:
       - id: shell-lint
